@@ -62,7 +62,7 @@ CLASS JWT
   METHOD Base64UrlDecode( cData )
   METHOD ByteToString( cData ) 
   METHOD GetSignature( cHeader, cPayload, cSecret, cAlgorithm )
-METHOD getposix() 
+  METHOD getposix() 
 
 ENDCLASS
 

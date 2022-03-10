@@ -2,7 +2,7 @@
 #include "hbhrb.ch"
 
 function main
-LOCAL handle := hb_hrbLoad( "jwt.hrb" )
+LOCAL handle := hb_hrbLoad( "../lib/jwt.hrb" )
 LOCAL oJWT 
 LOCAL cToken
    
