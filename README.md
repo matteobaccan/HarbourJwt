@@ -15,7 +15,7 @@ wget https://github.com/matteobaccan/HarbourJwt/blob/main/lib/jwt.hrb?raw=true
 JWT is a class library that can allow you to generate and validate JWT tokens
 
 ### Token generation
-For create  a token you must 
+To create  a token you must 
 
 1. Load jwt,hrb library
 
@@ -33,7 +33,7 @@ LOCAL cToken
 oJWT := &("JWT():new()")
 ```
 
-3. Configure a valid header, setting Type = JWT and an available Algorithm. At the moment the Algorithms available are: HS256, HS384 and HS512
+3. Configure a valid header, setting Type = JWT and an available Algorithm. At the moment the Algorithms available are: HS256, HS384, and HS512
 
 ```
 // Header
@@ -53,7 +53,7 @@ METHOD SetIssuedAt( nIssuedAt )
 METHOD SetJWTId( cJWTId )
 ```
 
-A simple payload can be formed by: Subject, Name and IssueAt
+A simple payload can be formed by: Subject, Name, and IssueAt
 
 ```
 // Payload
@@ -81,7 +81,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
 ```
 
 ### Token verification
-Token verifications are also symple
+Token verifications are also simple
 
 1. Load jwt.hrb library
 
@@ -104,12 +104,12 @@ oJWT := &("JWT():new()")
 oJWT:Decode("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik1hdHRlbyBCYWNjYW4iLCJpYXQiOjE1MTYyMzkwMjJ9.YR8QF52kgj0owYlP9TkEy_lNhC-Qdq38tqNNNqpvpK0", "MySecret")
 ```
 
-Decode return a .T. if token is valid. Other wise with
+Decode return a .T. if the token is valid. Otherwise with
 
 ```
 oJWT:GetError()
 ```
-You can get the decode error
+you can get the decode error
 
 ## Contribution
-Feel free to update this code with new PR
+Feel free to update this code with a new PR
