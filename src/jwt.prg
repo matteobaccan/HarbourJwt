@@ -16,53 +16,72 @@
 
 CLASS JWT
 
-  DATA cSecret
-  DATA aHeader
-  DATA aPayload
-  DATA cError
+HIDDEN:
 
-  METHOD New() CONSTRUCTOR
-
-  // Header
-  METHOD SetType( cType )
-  METHOD SetContentType( cContentType )     INLINE ::aHeader[ 'cty' ] :=  cContentType
-  METHOD SetAlgorithm( cAlgorithm )
-
-  // Payload
-  METHOD SetIssuer( cIssuer )               INLINE ::aPayload[ 'iss' ] := cIssuer
-  METHOD SetSubject( cSubject )             INLINE ::aPayload[ 'sub' ] := cSubject
-  METHOD SetAudience( cAudience )           INLINE ::aPayload[ 'aud' ] := cAudience
-  METHOD SetExpration( nExpiration )        INLINE ::aPayload[ 'exp' ] := nExpiration
-  METHOD SetNotBefore( nNotBefore )         INLINE ::aPayload[ 'nbf' ] := nNotBefore
-  METHOD SetIssuedAt( nIssuedAt )           INLINE ::aPayload[ 'iat' ] := nIssuedAt
-  METHOD SetJWTId( cJWTId )                 INLINE ::aPayload[ 'jti' ] := cJWTId
-
-  // Secret
-  METHOD SetSecret( cSecret )               INLINE ::cSecret := cSecret
-
-  // Cleanup data
-  METHOD Reset()
-
-  // Encode a JWT
-  METHOD Encode()
-
-  // Decode a JWT
-  METHOD Decode( cJWT, cSecret )
-
-  // Payload methods
-  METHOD SetPayloadData( cKey, uValue )     INLINE ::aPayload[ cKey ] := uValue
-  METHOD GetPayloadData( cKey )             INLINE ::aPayload[ cKey ]
-
-  // Getter internal data
-  METHOD GetPayload()                       INLINE ::aPayload
-  METHOD GetHeader()                        INLINE ::aHeader
-  METHOD GetError()                         INLINE ::cError
+  CLASSDATA cSecret
+  CLASSDATA aHeader
+  CLASSDATA aPayload
+  CLASSDATA cError
 
   METHOD Base64UrlEncode( cData )
   METHOD Base64UrlDecode( cData )
   METHOD ByteToString( cData ) 
   METHOD GetSignature( cHeader, cPayload, cSecret, cAlgorithm )
-  METHOD getposix() 
+
+EXPORTED:
+
+  METHOD New() CONSTRUCTOR
+
+  // Header
+  METHOD SetType( cType )
+  METHOD GetType()                          INLINE ::aHeader[ 'typ' ]
+  METHOD SetContentType( cContentType )     INLINE ::aHeader[ 'cty' ] :=  cContentType
+  METHOD GetContentType()                   INLINE ::aHeader[ 'cty' ]
+  METHOD SetAlgorithm( cAlgorithm )
+  METHOD GetAlgorithm()                     INLINE ::aHeader[ 'alg' ]
+
+  // Payload
+  METHOD SetIssuer( cIssuer )               INLINE ::aPayload[ 'iss' ] := cIssuer
+  METHOD GetIssuer()                        INLINE ::aPayload[ 'iss' ] 
+  METHOD SetSubject( cSubject )             INLINE ::aPayload[ 'sub' ] := cSubject
+  METHOD GetSubject()                       INLINE ::aPayload[ 'sub' ] 
+  METHOD SetAudience( cAudience )           INLINE ::aPayload[ 'aud' ] := cAudience
+  METHOD GetAudience()                      INLINE ::aPayload[ 'aud' ] 
+  METHOD SetExpration( nExpiration )        INLINE ::aPayload[ 'exp' ] := nExpiration
+  METHOD GetExpration()                     INLINE ::aPayload[ 'exp' ]
+  METHOD SetNotBefore( nNotBefore )         INLINE ::aPayload[ 'nbf' ] := nNotBefore
+  METHOD GetNotBefore()                     INLINE ::aPayload[ 'nbf' ]
+  METHOD SetIssuedAt( nIssuedAt )           INLINE ::aPayload[ 'iat' ] := nIssuedAt
+  METHOD GetIssuedAt()                      INLINE ::aPayload[ 'iat' ] 
+  METHOD SetJWTId( cJWTId )                 INLINE ::aPayload[ 'jti' ] := cJWTId
+  METHOD GetJWTId()                         INLINE ::aPayload[ 'jti' ] 
+
+  // Payload methods
+  METHOD SetPayloadData( cKey, uValue )     INLINE ::aPayload[ cKey ] := uValue
+  METHOD GetPayloadData( cKey )             INLINE ::aPayload[ cKey ]
+
+  // Secret
+  METHOD SetSecret( cSecret )               INLINE ::cSecret := cSecret
+  METHOD GetSecret()                        INLINE ::cSecret 
+
+  // Error
+  METHOD GetError()                         INLINE ::cError
+
+  // Cleanup: aHeader, aPayload, cError, cSecret
+  METHOD Reset()
+
+  // Encode a JWT and return it
+  METHOD Encode()
+
+  // Decode a JWT
+  METHOD Decode( cJWT, cSecret )
+
+  // Getter internal data with internal exposion
+  METHOD GetPayload()                       INLINE hb_hClone(::aPayload)
+  METHOD GetHeader()                        INLINE hb_hClone(::aHeader)
+
+  // Helper method for expiration setting
+  METHOD GetSeconds() 
 
 ENDCLASS
 
@@ -74,12 +93,12 @@ RETU SELF
 METHOD SetType( cType ) CLASS JWT
   LOCAL bRet := .F.
 
-  if cType=="JWT"
+  IF cType=="JWT"
       ::aHeader[ 'typ' ] := cType
-  else
+  ELSE
       bRet := .F.
       ::cError := "Invalid type [" +cType +"]"
-  endif
+  ENDIF
 
 RETU bRet
 
@@ -87,12 +106,12 @@ RETU bRet
 METHOD SetAlgorithm( cAlgorithm ) CLASS JWT
   LOCAL bRet := .F.
 
-  if cAlgorithm=="HS256" .OR. cAlgorithm=="HS384" .OR. cAlgorithm=="HS512"
+  IF cAlgorithm=="HS256" .OR. cAlgorithm=="HS384" .OR. cAlgorithm=="HS512"
       ::aHeader[ 'alg' ] := cAlgorithm
-  else
+  ELSE
       bRet := .F.
       ::cError := "Invalid algorithm [" +cAlgorithm +"]"
-  endif
+  ENDIF
 
 RETU bRet
 
@@ -144,7 +163,7 @@ METHOD ByteToString( cData ) CLASS JWT
 
 RETU cRet
 
-  METHOD GetSignature( cHeader, cPayload, cSecret, cAlgorithm ) CLASS JWT
+METHOD GetSignature( cHeader, cPayload, cSecret, cAlgorithm ) CLASS JWT
   LOCAL cSignature := ""
 
   DO CASE
@@ -157,7 +176,7 @@ RETU cRet
      OTHERWISE
          ::cError := "INVALID ALGORITHM"
   ENDCASE
-  RETU cSignature
+RETU cSignature
 
 METHOD Decode( cJWT, cSecret ) CLASS JWT
 
@@ -194,7 +213,7 @@ METHOD Decode( cJWT, cSecret ) CLASS JWT
 
   // Check expiration
   IF hb_HHasKey(::aPayLoad,'exp')
-     IF ::aPayLoad[ 'exp' ] < ::getposix()
+     IF ::aPayLoad[ 'exp' ] < ::GetSeconds()
        ::cError := "Token expired"
        RETU .F.
      ENDIF
@@ -202,11 +221,11 @@ METHOD Decode( cJWT, cSecret ) CLASS JWT
 
 RETU .T.
 
-METHOD getposix() CLASS JWT
+METHOD GetSeconds() CLASS JWT
 
-LOCAL posixday := date() - STOD("19700101")
-LOCAL cTime := time()
-LOCAL posixsec := posixday * 24 * 60 * 60
+  LOCAL posixday := date() - STOD("19700101")
+  LOCAL cTime := time()
+  LOCAL posixsec := posixday * 24 * 60 * 60
 
-return posixsec + (int(val(substr(cTime,1,2))) * 3600) + (int(val(substr(cTime,4.2))) * 60) + ( int(val(substr(cTime,7,2))) )
+RETU posixsec + (int(val(substr(cTime,1,2))) * 3600) + (int(val(substr(cTime,4.2))) * 60) + ( int(val(substr(cTime,7,2))) )
 

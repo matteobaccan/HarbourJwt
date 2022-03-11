@@ -49,6 +49,11 @@ AssertEquals( oJWT:Decode("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0
 AssertEquals( oJWT:Decode("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik1hdHRlbyBCYWNjYW4iLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTUxNjIzOTAyMn0.0T90m9fq8aOuiNbycTJxCf7BiQLw9xWXxe58-zV4RpY", "MySecret"), .F. )
 ? oJWT:GetError()
 
+// Check internal data exposion
+AssertEquals(oJWT:GetHeader()['alg'], oJWT:GetAlgorithm())
+oJWT:GetHeader()['alg'] := 'dddd'
+AssertEquals(oJWT:GetHeader()['alg'], oJWT:GetAlgorithm())
+
 hb_hrbUnload( handle )
 
 RETU NIL
@@ -56,9 +61,9 @@ RETU NIL
 
 function AssertEquals( uValue, uExpected )
    IF uValue==uExpected
-      ? "OK - signature verified"
+      ? "OK - data verified"
    ELSE
-      ? "KO - invalid signature"
+      ? "KO - invalid data"
       ? "Value   :", uValue
       ? "Expected:", uExpected
    ENDIF
