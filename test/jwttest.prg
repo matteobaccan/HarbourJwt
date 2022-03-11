@@ -104,7 +104,7 @@ oJWT:GetHeader()['alg'] := 'dddd'
 AssertEquals(oJWT:GetHeader()['alg'], oJWT:GetAlgorithm(), oJWT:getError() )
 
 // Versione 
-AssertEquals(oJWT:GetVersion(), "1.0.1" )
+AssertEquals(oJWT:GetVersion(), "1.0.2" )
 
 hb_hrbUnload( handle )
 

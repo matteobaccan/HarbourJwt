@@ -88,7 +88,7 @@ EXPORTED:
   METHOD GetSeconds() 
 
   // Versione
-  METHOD GetVersion()                       INLINE "1.0.1"
+  METHOD GetVersion()                       INLINE "1.0.2"
 
 ENDCLASS
 
