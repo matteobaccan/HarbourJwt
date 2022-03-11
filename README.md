@@ -8,7 +8,7 @@ A simple library to work with JSON Web Token and JSON Web Signature for Harbour 
 Package is available on [GitHub](https://github.com/matteobaccan/HarbourJwt/blob/main/lib/jwt.hrb),
 
 ```shell
-wget https://github.com/matteobaccan/HarbourJwt/blob/main/lib/jwt.hrb
+wget https://github.com/matteobaccan/HarbourJwt/blob/main/lib/jwt.hrb?raw=true
 ```
 
 ## Documentation
