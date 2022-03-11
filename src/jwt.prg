@@ -11,6 +11,8 @@
  *
  * https://datatracker.ietf.org/doc/html/rfc7519
  *
+ * Version 1.0.0
+ *
  */
 #include "hbclass.ch"
 
