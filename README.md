@@ -101,10 +101,11 @@ oJWT := &("JWT():new()")
 3. Verify the token
 
 ```
-oJWT:Decode("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik1hdHRlbyBCYWNjYW4iLCJpYXQiOjE1MTYyMzkwMjJ9.YR8QF52kgj0owYlP9TkEy_lNhC-Qdq38tqNNNqpvpK0", "MySecret")
+oJWT:SetSecret("MySecret")
+oJWT:Verify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik1hdHRlbyBCYWNjYW4iLCJpYXQiOjE1MTYyMzkwMjJ9.YR8QF52kgj0owYlP9TkEy_lNhC-Qdq38tqNNNqpvpK0")
 ```
 
-Decode return a .T. if the token is valid. Otherwise with
+Verify return a .T. if the token is valid. Otherwise with
 
 ```
 oJWT:GetError()

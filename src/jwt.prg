@@ -11,8 +11,6 @@
  *
  * https://datatracker.ietf.org/doc/html/rfc7519
  *
- * Version 1.0.1
- *
  */
 #include "hbclass.ch"
 
@@ -29,6 +27,7 @@ HIDDEN:
   METHOD Base64UrlDecode( cData )
   METHOD ByteToString( cData ) 
   METHOD GetSignature( cHeader, cPayload, cSecret, cAlgorithm )
+  METHOD CheckPayload(aPayload, cKey)
 
 EXPORTED:
 
@@ -43,24 +42,24 @@ EXPORTED:
   METHOD GetAlgorithm()                     INLINE ::aHeader[ 'alg' ]
 
   // Payload
-  METHOD SetIssuer( cIssuer )               INLINE ::aPayload[ 'iss' ] := cIssuer
-  METHOD GetIssuer()                        INLINE ::aPayload[ 'iss' ] 
-  METHOD SetSubject( cSubject )             INLINE ::aPayload[ 'sub' ] := cSubject
-  METHOD GetSubject()                       INLINE ::aPayload[ 'sub' ] 
-  METHOD SetAudience( cAudience )           INLINE ::aPayload[ 'aud' ] := cAudience
-  METHOD GetAudience()                      INLINE ::aPayload[ 'aud' ] 
-  METHOD SetExpration( nExpiration )        INLINE ::aPayload[ 'exp' ] := nExpiration
-  METHOD GetExpration()                     INLINE ::aPayload[ 'exp' ]
-  METHOD SetNotBefore( nNotBefore )         INLINE ::aPayload[ 'nbf' ] := nNotBefore
-  METHOD GetNotBefore()                     INLINE ::aPayload[ 'nbf' ]
-  METHOD SetIssuedAt( nIssuedAt )           INLINE ::aPayload[ 'iat' ] := nIssuedAt
-  METHOD GetIssuedAt()                      INLINE ::aPayload[ 'iat' ] 
-  METHOD SetJWTId( cJWTId )                 INLINE ::aPayload[ 'jti' ] := cJWTId
-  METHOD GetJWTId()                         INLINE ::aPayload[ 'jti' ] 
+  METHOD SetIssuer( cIssuer )               INLINE ::SetPayloadData('iss', cIssuer)
+  METHOD GetIssuer()                        INLINE ::GetPayloadData('iss')
+  METHOD SetSubject( cSubject )             INLINE ::SetPayloadData('sub', cSubject)
+  METHOD GetSubject()                       INLINE ::GetPayloadData('sub')
+  METHOD SetAudience( cAudience )           INLINE ::SetPayloadData('aud', cAudience)
+  METHOD GetAudience()                      INLINE ::GetPayloadData('aud')
+  METHOD SetExpration( nExpiration )        INLINE ::SetPayloadData('exp', nExpiration)
+  METHOD GetExpration()                     INLINE ::GetPayloadData('exp')
+  METHOD SetNotBefore( nNotBefore )         INLINE ::SetPayloadData('nbf', nNotBefore)
+  METHOD GetNotBefore()                     INLINE ::GetPayloadData('nbf')
+  METHOD SetIssuedAt( nIssuedAt )           INLINE ::SetPayloadData('iat', nIssuedAt)
+  METHOD GetIssuedAt()                      INLINE ::GetPayloadData('iat')
+  METHOD SetJWTId( cJWTId )                 INLINE ::SetPayloadData('jti', cJWTId)
+  METHOD GetJWTId()                         INLINE ::GetPayloadData('jti')
 
   // Payload methods
-  METHOD SetPayloadData( cKey, uValue )     INLINE ::aPayload[ cKey ] := uValue
-  METHOD GetPayloadData( cKey )             INLINE ::aPayload[ cKey ]
+  METHOD SetPayloadData( cKey, uValue )     INLINE IF( uValue==NIL, hb_HDel(::aPayload,cKey), ::aPayload[cKey] := uValue)
+  METHOD GetPayloadData( cKey )             INLINE IF( hb_HHasKey(::aPayLoad,cKey), ::aPayload[cKey], NIL )
 
   // Secret
   METHOD SetSecret( cSecret )               INLINE ::cSecret := cSecret
@@ -76,7 +75,10 @@ EXPORTED:
   METHOD Encode()
 
   // Decode a JWT
-  METHOD Decode( cJWT, cSecret )
+  METHOD Decode( cJWT )
+
+  // Decode a JWT
+  METHOD Verify( cJWT )
 
   // Getter internal data with internal exposion
   METHOD GetPayload()                       INLINE hb_hClone(::aPayload)
@@ -84,6 +86,9 @@ EXPORTED:
 
   // Helper method for expiration setting
   METHOD GetSeconds() 
+
+  // Versione
+  METHOD GetVersion()                       INLINE "1.0.1"
 
 ENDCLASS
 
@@ -180,10 +185,9 @@ METHOD GetSignature( cHeader, cPayload, cSecret, cAlgorithm ) CLASS JWT
   ENDCASE
 RETU cSignature
 
-METHOD Decode( cJWT, cSecret ) CLASS JWT
+METHOD Decode( cJWT ) CLASS JWT
 
   LOCAL aJWT
-  LOCAL cSignature, cNewSignature
 
   // Reset Object
   ::Reset()
@@ -201,24 +205,88 @@ METHOD Decode( cJWT, cSecret ) CLASS JWT
   // Exploce payload
   ::aPayload   := hb_jsonDecode( ::Base64UrlDecode( aJWT[2] ))
 
+RETU .T.
+
+METHOD Verify( cJWT ) CLASS JWT
+
+  LOCAL aJWT, aHeader, aPayload
+  LOCAL cSignature, cNewSignature
+
+  //  Split JWT
+  aJWT := HB_ATokens( cJWT, '.' )
+  IF LEN(aJWT) <> 3
+      ::cError := "Invalid JWT"
+      RETU .F.
+  ENDIF
+
+  // Explode header
+  aHeader   := hb_jsonDecode( ::Base64UrlDecode( aJWT[1] ))
+
+  // Exploce payload
+  aPayload   := hb_jsonDecode( ::Base64UrlDecode( aJWT[2] ))
+
   // Get signature
   cSignature  := aJWT[3]
 
-  ::SetSecret( cSecret )
-
   // Calculate new sicnature
-  cNewSignature   := ::GetSignature( aJWT[1], aJWT[2], cSecret, ::aHeader[ 'alg' ] )
+  cNewSignature   := ::GetSignature( aJWT[1], aJWT[2], ::cSecret, aHeader[ 'alg' ] )
   IF ( cSignature != cNewSignature )
     ::cError := "Invalid signature"
     RETU .F.
   ENDIF
 
+  // Check Issuer
+  IF !::CheckPayload(aPayload, 'iss')
+     ::cError := "Different issuer"
+     RETU .F.
+  ENDIF
+
+  // Check Subject
+  IF !::CheckPayload(aPayload, 'sub')
+     ::cError := "Different subject"
+     RETU .F.
+  ENDIF
+
+  // Check Audience
+  IF !::CheckPayload(aPayload, 'aud')
+     ::cError := "Different audience"
+     RETU .F.
+  ENDIF
+
   // Check expiration
-  IF hb_HHasKey(::aPayLoad,'exp')
-     IF ::aPayLoad[ 'exp' ] < ::GetSeconds()
+  IF hb_HHasKey(aPayLoad,'exp')
+     IF aPayLoad[ 'exp' ] < ::GetSeconds()
        ::cError := "Token expired"
        RETU .F.
      ENDIF
+  ENDIF
+
+  // Check not before
+  IF hb_HHasKey(aPayLoad,'nbf')
+     IF aPayLoad[ 'nbf' ] > ::GetSeconds()
+       ::cError := "Token not valid until:" +STR(aPayLoad[ 'nbf' ])
+       RETU .F.
+     ENDIF
+  ENDIF
+
+  // Check issuedAt
+  IF hb_HHasKey(aPayLoad,'iat')
+     IF aPayLoad[ 'iat' ] > ::GetSeconds()
+       ::cError := "Token issued in future:" +STR(aPayLoad[ 'iat' ])
+       RETU .F.
+     ENDIF
+  ENDIF
+
+  // Check JWT id
+  IF !::CheckPayload(aPayload, 'jti')
+     ::cError := "Different JWT id"
+     RETU .F.
+  ENDIF
+
+  // Check Type
+  IF !::CheckPayload(aPayload, 'typ')
+     ::cError := "Different JWT type"
+     RETU .F.
   ENDIF
 
 RETU .T.
@@ -231,3 +299,12 @@ METHOD GetSeconds() CLASS JWT
 
 RETU posixsec + (int(val(substr(cTime,1,2))) * 3600) + (int(val(substr(cTime,4.2))) * 60) + ( int(val(substr(cTime,7,2))) )
 
+METHOD CheckPayload(aPayload, cKey)
+  IF hb_HHasKey(aPayLoad,cKey) .AND. hb_HHasKey(::aPayLoad,cKey)
+     IF aPayLoad[ cKey ] != ::aPayLoad[ cKey ]
+       RETU .F.
+     ENDIF
+  ELSEIF hb_HHasKey(aPayLoad,cKey) .OR. hb_HHasKey(::aPayLoad,cKey)
+     RETU .F.
+  ENDIF
+RETU .T.
