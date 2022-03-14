@@ -1,7 +1,22 @@
 # HarbourJwt
 JWT Implementation for Harbour
 
-A simple library to work with JSON Web Token and JSON Web Signature for Harbour language
+A simple library to work with JSON Web Token and JSON Web Signature for Harbour language.
+You can find more information about JWT on the [official website](https://jwt.io).
+
+Harbour JWT supports the following algorithms:
+
+- HS256
+- HS384
+- HS512
+
+<!--
+    (CVE-2015-2951) The alg=none signature-bypass vulnerability
+    (CVE-2016-10555) The RS/HS256 public key mismatch vulnerability
+    (CVE-2018-0114) Key injection vulnerability
+    (CVE-2019-20933/CVE-2020-28637) Blank password vulnerability
+    (CVE-2020-28042) Null signature vulnerability
+-->
 
 ## Installation
 
@@ -17,13 +32,13 @@ JWT is a class library that can allow you to generate and validate JWT tokens
 ### Token generation
 To create  a token you must 
 
-1. Load jwt,hrb library
+1.  Load jwt,hrb library
 
 ```
 LOCAL handle := hb_hrbLoad( "jwt.hrb" )
 ```
 
-2. Create an empty JWT object
+ 2. Create an empty JWT object
 
 ```
 LOCAL oJWT 
