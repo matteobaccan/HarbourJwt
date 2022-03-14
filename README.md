@@ -7,9 +7,9 @@ You can find more information about JWT on the [official website](https://jwt.io
 
 Harbour JWT supports the following algorithms:
 
-- HS256
-- HS384
-- HS512
+-   HS256
+-   HS384
+-   HS512
 
 <!--
     (CVE-2015-2951) The alg=none signature-bypass vulnerability
@@ -51,7 +51,7 @@ LOCAL cToken
 oJWT := &("JWT():new()")
 ```
 
-3 . Configure a valid header, setting Type = JWT and an available Algorithm. At the moment the Algorithms available are: HS256, HS384, and HS512
+3.  Configure a valid header, setting Type = JWT and an available Algorithm. At the moment the Algorithms available are: HS256, HS384, and HS512
 
 ```xBase
 // Header
@@ -59,7 +59,7 @@ oJWT:setAlgorithm("HS256")
 oJWT:setType("JWT")
 ```
 
-4. Load a payload. The properties permitted in a payload are:
+4.  Load a payload. The properties permitted in a payload are:
 
 ```xBase
 METHOD SetIssuer( cIssuer )
@@ -80,14 +80,14 @@ oJWT:setPayloadData("name", "John Doe")
 oJWT:setIssuedAt(1516239022)
 ```
 
-5. Finally you must indicate a secret
+5.  Finally you must indicate a secret
 
 ```xBase
 // Secret
 oJWT:setSecret("your-256-bit-secret")
 ```
 
-6. Now you can get a token
+6.  Now you can get a token
 
 ```xBase
 // Get Token
@@ -102,13 +102,13 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
 
 Token verifications are also simple
 
-1. Load jwt.hrb library
+1.  Load jwt.hrb library
 
 ```xBase
 LOCAL handle := hb_hrbLoad( "jwt.hrb" )
 ```
 
-2. Create an empty JWT object
+2.  Create an empty JWT object
 
 ```xBase
 LOCAL oJWT
@@ -117,7 +117,7 @@ LOCAL oJWT
 oJWT := &("JWT():new()")
 ```
 
-3. Verify the token
+3.  Verify the token
 
 ```xBase
 oJWT:SetSecret("MySecret")
