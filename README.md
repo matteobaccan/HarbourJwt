@@ -1,4 +1,5 @@
 # HarbourJwt
+
 JWT Implementation for Harbour
 
 A simple library to work with JSON Web Token and JSON Web Signature for Harbour language.
@@ -27,23 +28,25 @@ wget https://github.com/matteobaccan/HarbourJwt/blob/main/lib/jwt.hrb?raw=true
 ```
 
 ## Documentation
+
 JWT is a class library that can allow you to generate and validate JWT tokens
 
 ### Token generation
-To create  a token you must 
 
-1.  Load jwt,hrb library
+To create a token you must
+
+1.  Load jwt.hrb library
 
 ```xBase
 LOCAL handle := hb_hrbLoad( "jwt.hrb" )
 ```
 
- 2. Create an empty JWT object
+2.  Create an empty JWT object
 
 ```xBase
-LOCAL oJWT 
+LOCAL oJWT
 LOCAL cToken
-   
+
 // Object
 oJWT := &("JWT():new()")
 ```
@@ -56,7 +59,7 @@ oJWT:setAlgorithm("HS256")
 oJWT:setType("JWT")
 ```
 
-4. Load a payload. The properties permitted in a payload are: 
+4. Load a payload. The properties permitted in a payload are:
 
 ```xBase
 METHOD SetIssuer( cIssuer )
@@ -96,6 +99,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4
 ```
 
 ### Token verification
+
 Token verifications are also simple
 
 1. Load jwt.hrb library
@@ -107,7 +111,7 @@ LOCAL handle := hb_hrbLoad( "jwt.hrb" )
 2. Create an empty JWT object
 
 ```xBase
-LOCAL oJWT 
+LOCAL oJWT
 
 // Object
 oJWT := &("JWT():new()")
@@ -125,7 +129,9 @@ Verify return a .T. if the token is valid. Otherwise with
 ```xBase
 oJWT:GetError()
 ```
+
 you can get the decode error
 
 ## Contribution
+
 Feel free to update this code with a new PR
