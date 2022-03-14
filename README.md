@@ -34,13 +34,13 @@ To create  a token you must
 
 1.  Load jwt,hrb library
 
-```
+```xBase
 LOCAL handle := hb_hrbLoad( "jwt.hrb" )
 ```
 
  2. Create an empty JWT object
 
-```
+```xBase
 LOCAL oJWT 
 LOCAL cToken
    
@@ -48,9 +48,9 @@ LOCAL cToken
 oJWT := &("JWT():new()")
 ```
 
-3. Configure a valid header, setting Type = JWT and an available Algorithm. At the moment the Algorithms available are: HS256, HS384, and HS512
+3 . Configure a valid header, setting Type = JWT and an available Algorithm. At the moment the Algorithms available are: HS256, HS384, and HS512
 
-```
+```xBase
 // Header
 oJWT:setAlgorithm("HS256")
 oJWT:setType("JWT")
@@ -58,7 +58,7 @@ oJWT:setType("JWT")
 
 4. Load a payload. The properties permitted in a payload are: 
 
-```
+```xBase
 METHOD SetIssuer( cIssuer )
 METHOD SetSubject( cSubject )
 METHOD SetAudience( cAudience )
@@ -70,7 +70,7 @@ METHOD SetJWTId( cJWTId )
 
 A simple payload can be formed by: Subject, Name, and IssueAt
 
-```
+```xBase
 // Payload
 oJWT:setSubject("1234567890")
 oJWT:setPayloadData("name", "John Doe")
@@ -79,14 +79,14 @@ oJWT:setIssuedAt(1516239022)
 
 5. Finally you must indicate a secret
 
-```
+```xBase
 // Secret
 oJWT:setSecret("your-256-bit-secret")
 ```
 
 6. Now you can get a token
 
-```
+```xBase
 // Get Token
 cToken = oJWT:Encode()
 ```
@@ -100,13 +100,13 @@ Token verifications are also simple
 
 1. Load jwt.hrb library
 
-```
+```xBase
 LOCAL handle := hb_hrbLoad( "jwt.hrb" )
 ```
 
 2. Create an empty JWT object
 
-```
+```xBase
 LOCAL oJWT 
 
 // Object
@@ -115,14 +115,14 @@ oJWT := &("JWT():new()")
 
 3. Verify the token
 
-```
+```xBase
 oJWT:SetSecret("MySecret")
 oJWT:Verify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik1hdHRlbyBCYWNjYW4iLCJpYXQiOjE1MTYyMzkwMjJ9.YR8QF52kgj0owYlP9TkEy_lNhC-Qdq38tqNNNqpvpK0")
 ```
 
 Verify return a .T. if the token is valid. Otherwise with
 
-```
+```xBase
 oJWT:GetError()
 ```
 you can get the decode error
