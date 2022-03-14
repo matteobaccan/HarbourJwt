@@ -1,5 +1,7 @@
 # HarbourJwt
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/297af1f39d004d7992599ce45fcd3b6a)](https://www.codacy.com/gh/matteobaccan/HarbourJwt/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=matteobaccan/HarbourJwt&amp;utm_campaign=Badge_Grade)
+
 JWT Implementation for Harbour
 
 A simple library to work with JSON Web Token and JSON Web Signature for Harbour language.
