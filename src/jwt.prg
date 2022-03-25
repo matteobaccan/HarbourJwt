@@ -192,6 +192,12 @@ METHOD Decode( cJWT ) CLASS JWT
   // Reset Object
   ::Reset()
 
+  // Check JWT
+  IF TYPE(cJWT)!="C"
+      ::cError := "Invalid JWT: not character"
+      RETU .F.
+  ENDIF
+
   //  Split JWT
   aJWT := HB_ATokens( cJWT, '.' )
   IF LEN(aJWT) <> 3
@@ -211,6 +217,12 @@ METHOD Verify( cJWT ) CLASS JWT
 
   LOCAL aJWT, aHeader, aPayload
   LOCAL cSignature, cNewSignature
+
+  // Check JWT
+  IF TYPE(cJWT)!="C"
+      ::cError := "Invalid JWT: not character"
+      RETU .F.
+  ENDIF
 
   //  Split JWT
   aJWT := HB_ATokens( cJWT, '.' )
