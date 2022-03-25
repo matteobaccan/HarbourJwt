@@ -25,7 +25,7 @@ HIDDEN:
 
   METHOD Base64UrlEncode( cData )
   METHOD Base64UrlDecode( cData )
-  METHOD ByteToString( cData ) 
+  METHOD ByteToString( cData )
   METHOD GetSignature( cHeader, cPayload, cSecret, cAlgorithm )
   METHOD CheckPayload(aPayload, cKey)
 
@@ -63,7 +63,7 @@ EXPORTED:
 
   // Secret
   METHOD SetSecret( cSecret )               INLINE ::cSecret := cSecret
-  METHOD GetSecret()                        INLINE ::cSecret 
+  METHOD GetSecret()                        INLINE ::cSecret
 
   // Error
   METHOD GetError()                         INLINE ::cError
@@ -85,7 +85,7 @@ EXPORTED:
   METHOD GetHeader()                        INLINE hb_hClone(::aHeader)
 
   // Helper method for expiration setting
-  METHOD GetSeconds() 
+  METHOD GetSeconds()
 
   // Versione
   METHOD GetVersion()                       INLINE "1.0.2"
@@ -136,7 +136,7 @@ METHOD Encode() CLASS JWT
 
   LOCAL cHeader
   LOCAL cPayload
-  LOCAL cSignature 
+  LOCAL cSignature
 
   //  Encode header
   cHeader     := ::Base64UrlEncode( hb_jsonEncode( ::aHeader ) )
@@ -161,10 +161,10 @@ METHOD ByteToString( cData ) CLASS JWT
    LOCAL nLen := LEN( cData )
    LOCAL nX, nNum
 
-   cData := UPPER(cData)    
+   cData := UPPER(cData)
    FOR nX := 1 TO nLen STEP 2
       nNum := ( AT( SubStr( cData, nX  , 1 ), "0123456789ABCDEF" ) - 1 ) * 16
-      nNum += AT( SubStr( cData, nX+1, 1 ), "0123456789ABCDEF" ) - 1 
+      nNum += AT( SubStr( cData, nX+1, 1 ), "0123456789ABCDEF" ) - 1
       HB_BPOKE( @cRet, (nX+1)/2, nNum )
    NEXT
 
@@ -193,8 +193,8 @@ METHOD Decode( cJWT ) CLASS JWT
   ::Reset()
 
   // Check JWT
-  IF TYPE(cJWT)!="C"
-      ::cError := "Invalid JWT: not character"
+  IF VALTYPE(cJWT)!="C"
+      ::cError := "Invalid JWT: not character ["+VALTYPE(cJWT)+"]"
       RETU .F.
   ENDIF
 
@@ -219,8 +219,8 @@ METHOD Verify( cJWT ) CLASS JWT
   LOCAL cSignature, cNewSignature
 
   // Check JWT
-  IF TYPE(cJWT)!="C"
-      ::cError := "Invalid JWT: not character"
+  IF VALTYPE(cJWT)!="C"
+      ::cError := "Invalid JWT: not character ["+VALTYPE(cJWT)+"]"
       RETU .F.
   ENDIF
 
