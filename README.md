@@ -26,7 +26,7 @@ Harbour JWT supports the following algorithms:
 Package is available on [GitHub](https://github.com/matteobaccan/HarbourJwt/blob/main/lib/jwt.hrb),
 
 ```shell
-wget https://github.com/matteobaccan/HarbourJwt/blob/main/lib/jwt.hrb?raw=true
+wget https://raw.githubusercontent.com/matteobaccan/HarbourJwt/main/lib/jwt.hrb
 ```
 
 ## Documentation
