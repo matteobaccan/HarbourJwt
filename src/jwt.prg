@@ -234,8 +234,20 @@ METHOD Verify( cJWT ) CLASS JWT
   // Explode header
   aHeader   := hb_jsonDecode( ::Base64UrlDecode( aJWT[1] ))
 
+  // Check aHeader
+  IF VALTYPE(aHeader)!="H"
+      ::cError := "Invalid JWT: header not base64"
+      RETU .F.
+  ENDIF
+
   // Exploce payload
   aPayload   := hb_jsonDecode( ::Base64UrlDecode( aJWT[2] ))
+
+  // Check aPayload
+  IF VALTYPE(aPayload)!="H"
+      ::cError := "Invalid JWT: payload not base64"
+      RETU .F.
+  ENDIF
 
   // Get signature
   cSignature  := aJWT[3]
