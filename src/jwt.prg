@@ -209,7 +209,7 @@ METHOD Decode( cJWT ) CLASS JWT
   ::aHeader   := hb_jsonDecode( ::Base64UrlDecode( aJWT[1] ))
 
   // Exploce payload
-  ::aPayload   := hb_jsonDecode( ::Base64UrlDecode( aJWT[2] ))
+  ::aPayload  := hb_jsonDecode( ::Base64UrlDecode( aJWT[2] ))
 
 RETU .T.
 
