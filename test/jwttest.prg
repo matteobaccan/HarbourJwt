@@ -6,6 +6,8 @@ LOCAL handle := hb_hrbLoad( "../lib/jwt.hrb" )
 LOCAL oJWT 
 LOCAL cToken
    
+? "JWTTest"
+
 // Object
 oJWT := &("JWT():new()")
 
