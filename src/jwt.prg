@@ -321,7 +321,7 @@ METHOD GetSeconds() CLASS JWT
   LOCAL cTime := time()
   LOCAL posixsec := posixday * 24 * 60 * 60
 
-RETU posixsec + (int(val(substr(cTime,1,2))) * 3600) + (int(val(substr(cTime,4.2))) * 60) + ( int(val(substr(cTime,7,2))) )
+RETU posixsec + (int(val(substr(cTime,1,2))) * 3600) + (int(val(substr(cTime,4,2))) * 60) + ( int(val(substr(cTime,7,2))) )
 
 METHOD CheckPayload(aPayload, cKey)
   IF hb_HHasKey(aPayLoad,cKey) .AND. hb_HHasKey(::aPayLoad,cKey)
