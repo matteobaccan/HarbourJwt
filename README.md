@@ -53,7 +53,8 @@ To create a token you must
     oJWT := &("JWT():new()")
     ```
 
-3. Configure a valid header, setting Type = JWT and an available Algorithm. At the moment the Algorithms available are: HS256, HS384, and HS512
+3. Configure a valid header, setting Type = JWT and an available Algorithm.
+   At the moment the Algorithms available are: HS256, HS384, and HS512
 
     ```xBase
     // Header
@@ -61,7 +62,7 @@ To create a token you must
     oJWT:setType("JWT")
     ```
 
-4. Load a payload. The properties permitted in a payload are:
+5. Load a payload. The properties permitted in a payload are:
 
     ```xBase
     METHOD SetIssuer( cIssuer )
@@ -82,14 +83,14 @@ To create a token you must
     oJWT:setIssuedAt(1516239022)
     ```
 
-5. Finally you must indicate a secret
+6. Finally you must indicate a secret
 
     ```xBase
     // Secret
     oJWT:setSecret("your-256-bit-secret")
     ```
 
-6. Now you can get a token
+7. Now you can get a token
 
     ```xBase
     // Get Token
