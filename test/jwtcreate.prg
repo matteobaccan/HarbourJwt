@@ -81,7 +81,7 @@ INKEY(6)
 
 // Now thest agai the token
 IF oJWTverify:Verify(cToken)
-   ? "OK"
+   ? "OK - verified"
 ELSE
    ? "ERROR - expired"
    ? oJWTVerify:getError()

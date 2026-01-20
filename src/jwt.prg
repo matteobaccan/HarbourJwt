@@ -80,7 +80,7 @@ EXPORTED:
   // Decode a JWT
   METHOD Verify( cJWT )
 
-  // Getter internal data with internal explosion
+  // Getter internal data with internal exposition
   METHOD GetPayload()                       INLINE hb_hClone(::aPayload)
   METHOD GetHeader()                        INLINE hb_hClone(::aHeader)
 
@@ -218,6 +218,9 @@ METHOD Verify( cJWT ) CLASS JWT
   LOCAL aJWT, aHeader, aPayload
   LOCAL cSignature, cNewSignature
 
+  // Reset error
+  ::cError := ''
+
   // Check JWT
   IF VALTYPE(cJWT)!="C"
       ::cError := "Invalid JWT: not character ["+VALTYPE(cJWT)+"]"
@@ -254,7 +257,7 @@ METHOD Verify( cJWT ) CLASS JWT
 
   // Calculate new signature
   cNewSignature   := ::GetSignature( aJWT[1], aJWT[2], ::cSecret, aHeader[ 'alg' ] )
-  IF ( cSignature != cNewSignature )
+  IF ( cSignature != cNewSignature .OR. !EMPTY(::cError) )
     ::cError := "Invalid signature"
     RETU .F.
   ENDIF

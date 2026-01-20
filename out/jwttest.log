@@ -1,26 +1,53 @@
 
 JWTTest
+Check HS256
+OK - data verified
+Check HS384
+OK - data verified
+Check HS512
+OK - data verified
+Token validation
+OK - data verified
+Check Issuer
 OK - data verified
 OK - data verified
+Check secret reset after Decode
 OK - data verified
+Check secret recovery
 OK - data verified
+Check Subject
 OK - data verified
+Check Subject reset
 OK - data verified
+Check Audience
 OK - data verified
+Check Audience reset
 OK - data verified
+Check Expiration
 OK - data verified
+Check Expiration reset
 OK - data verified
+Check NotBefore
 OK - data verified
+Check NotBefore reset
 OK - data verified
+Check IssuedAt
 OK - data verified
+Check IssuedAt reset
 OK - data verified
+Check JWTId
 OK - data verified
+Check JWTId reset
 OK - data verified
+Check Decode
 OK - data verified
+Check internal data exposition
 OK - data verified
+Check internal data exposition after modification attempt
 OK - data verified
+Check empty signature on algorithm none
 OK - data verified
+Check invalid signature on RS256
 OK - data verified
-OK - data verified
-OK - data verified
+Check Version
 OK - data verified
