@@ -80,7 +80,7 @@ EXPORTED:
   // Decode a JWT
   METHOD Verify( cJWT )
 
-  // Getter internal data with internal exposion
+  // Getter internal data with internal explosion
   METHOD GetPayload()                       INLINE hb_hClone(::aPayload)
   METHOD GetHeader()                        INLINE hb_hClone(::aHeader)
 
@@ -208,7 +208,7 @@ METHOD Decode( cJWT ) CLASS JWT
   // Explode header
   ::aHeader   := hb_jsonDecode( ::Base64UrlDecode( aJWT[1] ))
 
-  // Exploce payload
+  // Explode payload
   ::aPayload  := hb_jsonDecode( ::Base64UrlDecode( aJWT[2] ))
 
 RETU .T.
@@ -240,7 +240,7 @@ METHOD Verify( cJWT ) CLASS JWT
       RETU .F.
   ENDIF
 
-  // Exploce payload
+  // Explode payload
   aPayload   := hb_jsonDecode( ::Base64UrlDecode( aJWT[2] ))
 
   // Check aPayload
@@ -252,7 +252,7 @@ METHOD Verify( cJWT ) CLASS JWT
   // Get signature
   cSignature  := aJWT[3]
 
-  // Calculate new sicnature
+  // Calculate new signature
   cNewSignature   := ::GetSignature( aJWT[1], aJWT[2], ::cSecret, aHeader[ 'alg' ] )
   IF ( cSignature != cNewSignature )
     ::cError := "Invalid signature"
